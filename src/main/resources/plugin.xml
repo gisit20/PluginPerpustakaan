@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin>
+    <name>Plugin Perpustakaan</name>
+    <description>Plugin untuk Tugas Perpustakaan</description>
+    <version>1.0</version>
+    <needReboot>true</needReboot>        
+</plugin>

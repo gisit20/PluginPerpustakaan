@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<menus type="special" name="MenuPerpustakaan" text="Menu Perpustakaan" objid="PGP-TR-05">
+    <menuItem>
+        <objid>PGP-TR-06</objid>
+        <name>Menu Perpustakaan</name>
+        <text>Menu Perpustakaan</text>
+        <action>com.bits.bee.perpustakaan.action.FrmMemberAction</action>
+    </menuItem>
+    <menuItem>
+        <objid>PGP-TR-07</objid>
+        <name>Menu Perpustakaan2</name>
+        <text>Menu Perpustakaan2</text>
+        <action>com.bits.bee.perpustakaan.action.FrmMemberAction2</action>
+    </menuItem>
+    <menuItem>
+        <objid>PGP-TR-08</objid>
+        <name>Book Menu</name>
+        <text>Book Menu</text>
+        <action>com.bits.bee.perpustakaan.action.FrmBookAction</action>
+    </menuItem>
+    <menuItem>
+        <objid>PGP-TR-09</objid>
+        <name>Menu AddBook</name>
+        <text>Menu AddBook</text>
+        <action>com.bits.bee.perpustakaan.action.FrmAddBookAction</action>
+    </menuItem>
+</menus>
