@@ -6,9 +6,12 @@
 package com.bits.bee.perpustakaan.ui;
 
 import com.bits.bee.perpustakaan.bl.PinjamBookTrans;
+import com.bits.bee.perpustakaan.ui.component.SPikBook;
+import com.bits.bee.perpustakaan.ui.dlg.DlgPinjamBook;
 import com.bits.bee.ui.UIMgr;
 import com.bits.bee.ui.myswing.InternalFrameTrans;
 import com.bits.lib.BUtil;
+import com.bits.lib.dbswing.BCellEditor;
 import com.bits.lib.dbswing.BdbState;
 import com.bits.lib.security.BAuthMgr;
 import com.borland.dx.dataset.DataSet;
@@ -50,14 +53,24 @@ public class FrmPinjamBook extends InternalFrameTrans implements PropertyChangeL
 
     private void initTable() {
         DataSet ds = trans.getDataSetDetail();
+        SPikBook sPikBook = new SPikBook();
         for (int i = 0; i < ds.getColumnCount(); i++) {
             ds.getColumn(i).setVisible(0);
         }
 
         UIMgr.setDataSetDetailTrans(ds);
+        ds.getColumn("pinjamid").setVisible(0);
         ds.getColumn("pinjamdno").setCaption("No");
         ds.getColumn("pinjamdno").setWidth(4);
         ds.getColumn("pinjamdno").setVisible(1);
+        ds.getColumn("bookid").setCaption("Kode Buku");
+        ds.getColumn("bookid").setItemEditor(new BCellEditor(sPikBook));
+        ds.getColumn("bookid").setVisible(1);
+        ds.getColumn("title").setCaption("Judul Buku");
+        ds.getColumn("title").setWidth(25);
+        ds.getColumn("title").setVisible(1);
+        ds.getColumn("qty").setCaption("Jumlah");
+        ds.getColumn("qty").setWidth(7);
     }
 
     /**
@@ -80,6 +93,11 @@ public class FrmPinjamBook extends InternalFrameTrans implements PropertyChangeL
         jScrollPane1 = new javax.swing.JScrollPane();
         jBdbTable1 = new com.bits.lib.dbswing.JBdbTable();
         jFormLabel1 = new com.bits.bee.ui.myswing.JFormLabel();
+
+        setClosable(true);
+        setMaximizable(true);
+        setResizable(true);
+        setTitle(org.openide.util.NbBundle.getMessage(FrmPinjamBook.class, "FrmPinjamBook.title")); // NOI18N
 
         jBToolbar1.setEnableDelete(false);
         jBToolbar1.setEnablePrint(false);
@@ -256,7 +274,17 @@ public class FrmPinjamBook extends InternalFrameTrans implements PropertyChangeL
 
     @Override
     public void doOpen() {
-
+        DlgPinjamBook dlg = DlgPinjamBook.getInstance();
+        dlg.setVisible(true);
+        String id = dlg.getSelectedID();
+        if (id != null) {
+            try {
+                trans.LoadID(id);
+                state.setState(BdbState.stEDIT);
+            } catch (Exception ex) {
+                Exceptions.printStackTrace(ex);
+            }
+        }
     }
 
     @Override
@@ -285,7 +313,7 @@ public class FrmPinjamBook extends InternalFrameTrans implements PropertyChangeL
             UIMgr.showErrorDialog("Gagal simmpan data", ex);
             Exceptions.printStackTrace(ex);
         }
-
+        state.setState(BdbState.stNONE);
     }
 
     @Override
@@ -310,26 +338,40 @@ public class FrmPinjamBook extends InternalFrameTrans implements PropertyChangeL
             UIMgr.showErrorDialog("gagal void date", ex);
             Exceptions.printStackTrace(ex);
         }
-        
+        state.setState(BdbState.stNONE);
     }
 
     @Override
     public void doPrint() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void doRefresh() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void setTransState(int i) {
-        
+    public void setTransState(int state) {
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (evt.getPropertyName().equalsIgnoreCase("state")) {
+            if (state.getState() == BdbState.stNEW || state.getState() == BdbState.stEDIT) {
+                setEnabledPanel(true);                
+            } else {
+                setEnabledPanel(false);
+            }
+        }
     }
+//    
+//    private boolean validateData() {
+//        if (getDataSet().getString("branchid").isEmpty()) {
+//            UIMgr.showErrorDialog("Kode Branch tidak boleh kosong");
+//            return false;
+//        } else if (table.getDataSet().getString("branchname").isEmpty()) {
+//            UIMgr.showErrorDialog("Nama Branch tidak boleh kosong");
+//            return false;
+//        } 
+//        return true;
+//    }
 }

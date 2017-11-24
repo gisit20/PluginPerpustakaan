@@ -7,7 +7,7 @@ package com.bits.bee.perpustakaan.ui;
 
 import com.bits.bee.perpustakaan.bl.AddBookTrans;
 import com.bits.bee.perpustakaan.ui.component.PikBook;
-import com.bits.bee.perpustakaan.ui.component.sPikBook;
+import com.bits.bee.perpustakaan.ui.component.SPikBook;
 import com.bits.bee.perpustakaan.ui.dlg.DlgAddBook;
 import com.bits.bee.ui.UIMgr;
 import com.bits.bee.ui.myswing.InternalFrameTrans;
@@ -25,12 +25,12 @@ import org.openide.util.Exceptions;
  * @author Sigit Sukarman
  */
 public class FrmAddBook extends InternalFrameTrans implements PropertyChangeListener {
-    
-    private static FrmAddBook singleton =null;
+
+    private static FrmAddBook singleton = null;
     private AddBookTrans trans = new AddBookTrans();
     private String OBJID = "PGP-TR-09";
     BdbState state = new BdbState();
-    
+
     /**
      * Creates new form FrmAddBook
      */
@@ -39,10 +39,10 @@ public class FrmAddBook extends InternalFrameTrans implements PropertyChangeList
         initForm();
         initTable();
     }
-    
-    public synchronized FrmAddBook getInstance(){
-        if(singleton==null){
-            singleton=new FrmAddBook();
+
+    public synchronized FrmAddBook getInstance() {
+        if (singleton == null) {
+            singleton = new FrmAddBook();
         }
         return singleton;
     }
@@ -55,26 +55,26 @@ public class FrmAddBook extends InternalFrameTrans implements PropertyChangeList
         state.addPropertyChangeListener("state", this);
         state.setState(BdbState.stNONE);
     }
-    
+
     private void setEnabledPanel(boolean b) {
         BUtil.setEnabledPanel(jPanel1, b);
     }
 
     private void initTable() {
         DataSet ds = trans.getDataSetDetail();
-
+        SPikBook sPikBook=new SPikBook();
         for (int i = 0; i < ds.getColumnCount(); i++) {
             ds.getColumn(i).setVisible(0);
         }
 
         UIMgr.setDataSetDetailTrans(ds);
         ds.getColumn("tambahid").setVisible(0);
-        
+
         ds.getColumn("tambahdno").setCaption("No");
         ds.getColumn("tambahdno").setWidth(4);
         ds.getColumn("tambahdno").setVisible(1);
         ds.getColumn("bookid").setCaption("Kode Buku");
-        ds.getColumn("bookid").setItemEditor(new BCellEditor(new sPikBook()));
+        ds.getColumn("bookid").setItemEditor(new BCellEditor(sPikBook));
         ds.getColumn("bookid").setWidth(15);
         ds.getColumn("bookid").setVisible(1);
         ds.getColumn("title").setCaption("Judul Buku");
@@ -107,10 +107,11 @@ public class FrmAddBook extends InternalFrameTrans implements PropertyChangeList
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
+        setTitle(org.openide.util.NbBundle.getMessage(FrmAddBook.class, "FrmAddBook.title")); // NOI18N
 
+        jBToolbar1.setEnableEdit(true);
         jBToolbar1.setEnablePrint(false);
         jBToolbar1.setEnableRefresh(false);
-        jBToolbar1.setEnableVoid(false);
         jBToolbar1.addJBToolbarListener(new com.bits.lib.dbswing.JBToolbarListener() {
             public void toolbarNewPerformed(com.bits.lib.dbswing.JBToolbarEvent evt) {
                 jBToolbar1ToolbarNewPerformed(evt);
@@ -131,6 +132,7 @@ public class FrmAddBook extends InternalFrameTrans implements PropertyChangeList
                 jBToolbar1ToolbarDeletePerformed(evt);
             }
             public void toolbarVoidPerformed(com.bits.lib.dbswing.JBToolbarEvent evt) {
+                jBToolbar1ToolbarVoidPerformed(evt);
             }
             public void toolbarPrintPerformed(com.bits.lib.dbswing.JBToolbarEvent evt) {
             }
@@ -247,6 +249,10 @@ public class FrmAddBook extends InternalFrameTrans implements PropertyChangeList
         doSave();
     }//GEN-LAST:event_jBToolbar1ToolbarSavePerformed
 
+    private void jBToolbar1ToolbarVoidPerformed(com.bits.lib.dbswing.JBToolbarEvent evt) {//GEN-FIRST:event_jBToolbar1ToolbarVoidPerformed
+        doVoid();
+    }//GEN-LAST:event_jBToolbar1ToolbarVoidPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.bits.lib.dbswing.JBDatePicker jBDatePicker1;
@@ -280,9 +286,7 @@ public class FrmAddBook extends InternalFrameTrans implements PropertyChangeList
             } catch (Exception ex) {
                 Exceptions.printStackTrace(ex);
             }
-
         }
-
     }
 
     @Override
@@ -326,29 +330,34 @@ public class FrmAddBook extends InternalFrameTrans implements PropertyChangeList
 
     @Override
     public void doVoid() {
-        
+        try {
+            trans.Void();
+            UIMgr.showMessageDialog("Data berhasil divoid");
+            trans.emptyAllRows();
+            state.setState(BdbState.stNONE);
+        } catch (Exception ex) {
+            UIMgr.showErrorDialog("Gagal void data", ex);
+            ex.printStackTrace();
+        }
     }
 
     @Override
     public void doPrint() {
-        
     }
 
     @Override
     public void doRefresh() {
-        
     }
 
     @Override
     public void setTransState(int i) {
-        
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equalsIgnoreCase("state")){
-            if (state.getState()==BdbState.stNEW 
-                    || state.getState()==BdbState.stEDIT){
+        if (evt.getPropertyName().equalsIgnoreCase("state")) {
+            if (state.getState() == BdbState.stNEW
+                    || state.getState() == BdbState.stEDIT) {
                 setEnabledPanel(true);
             } else {
                 setEnabledPanel(false);

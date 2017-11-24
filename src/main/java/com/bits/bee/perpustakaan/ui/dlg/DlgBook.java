@@ -60,7 +60,7 @@ public class DlgBook extends JBDialog {
     private void initTable() {
         qds.getColumn("bookid").setCaption("Kode");
         qds.getColumn("bookid").setWidth(8);
-        qds.getColumn("title").setCaption("Nama");
+        qds.getColumn("title").setCaption("Title");
         qds.getColumn("title").setWidth(20);
 
 //        qds.getColumn("dob").setVisible(0);

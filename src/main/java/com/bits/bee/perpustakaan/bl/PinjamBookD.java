@@ -18,6 +18,7 @@ import com.borland.dx.dataset.DataSet;
 import com.borland.dx.dataset.DataSetException;
 import com.borland.dx.dataset.ReadRow;
 import com.borland.dx.dataset.Variant;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.TooManyListenersException;
 
@@ -36,7 +37,7 @@ public class PinjamBookD extends BTable implements CalcFieldsListener, DataChang
             new Column("pinjamid", "pinjamid", Variant.STRING),
             new Column("pinjamdno", "pinjamdno", Variant.SHORT),
             new Column("bookid", "bookid", Variant.STRING),
-            new Column("title", "title", Variant.STRING),
+            new Column("title", "title", Variant.STRING), //kolom title di pinjambookd tidak ada maka pakai calc
             new Column("qty", "qty", Variant.BIGDECIMAL)
         };
         HashMap hm = JBSQL.ColumnsToHashMap(cols);
@@ -70,25 +71,21 @@ public class PinjamBookD extends BTable implements CalcFieldsListener, DataChang
 
     @Override
     public void dataChanged(DataChangeEvent dce) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void changed(DataSet ds, Column column, Variant vrnt) {
         String columnName = column.getColumnName();
-        if (columnName.equalsIgnoreCase("bookid") && ds.getString("bookid").length() > 0) { //mengeset quantyty sama unit saja
-            itemid_changed();
+        if (column.getColumnName().equalsIgnoreCase("bookid") && ds.getString("bookid").length() > 0) { //mengeset quantyty sama unit saja
+            BigDecimal qty = BigDecimal.ONE;
+            setBigDecimal("qty", qty);
         }
     }
 
     @Override
     public void validate(DataSet ds, Column column, Variant vrnt) throws Exception, DataSetException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void itemid_changed() {
-        setInt("qty", 1);
-        dataset.post();
-    }
+    
 
 }

@@ -5,6 +5,9 @@
     <Property name="closable" type="boolean" value="true"/>
     <Property name="iconifiable" type="boolean" value="true"/>
     <Property name="maximizable" type="boolean" value="true"/>
+    <Property name="title" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+      <ResourceString bundle="com/bits/bee/perpustakaan/ui/Bundle.properties" key="FrmAddBook.title" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+    </Property>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -58,9 +61,9 @@
     </Component>
     <Container class="com.bits.lib.dbswing.JBToolbar" name="jBToolbar1">
       <Properties>
+        <Property name="enableEdit" type="boolean" value="true"/>
         <Property name="enablePrint" type="boolean" value="false"/>
         <Property name="enableRefresh" type="boolean" value="false"/>
-        <Property name="enableVoid" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="toolbarNewPerformed" listener="com.bits.lib.dbswing.JBToolbarListener" parameters="com.bits.lib.dbswing.JBToolbarEvent" handler="jBToolbar1ToolbarNewPerformed"/>
@@ -69,6 +72,7 @@
         <EventHandler event="toolbarSavePerformed" listener="com.bits.lib.dbswing.JBToolbarListener" parameters="com.bits.lib.dbswing.JBToolbarEvent" handler="jBToolbar1ToolbarSavePerformed"/>
         <EventHandler event="toolbarCancelPerformed" listener="com.bits.lib.dbswing.JBToolbarListener" parameters="com.bits.lib.dbswing.JBToolbarEvent" handler="jBToolbar1ToolbarCancelPerformed"/>
         <EventHandler event="toolbarDeletePerformed" listener="com.bits.lib.dbswing.JBToolbarListener" parameters="com.bits.lib.dbswing.JBToolbarEvent" handler="jBToolbar1ToolbarDeletePerformed"/>
+        <EventHandler event="toolbarVoidPerformed" listener="com.bits.lib.dbswing.JBToolbarListener" parameters="com.bits.lib.dbswing.JBToolbarEvent" handler="jBToolbar1ToolbarVoidPerformed"/>
         <EventHandler event="toolbarRefreshPerformed" listener="com.bits.lib.dbswing.JBToolbarListener" parameters="com.bits.lib.dbswing.JBToolbarEvent" handler="jBToolbar1ToolbarRefreshPerformed"/>
       </Events>
 

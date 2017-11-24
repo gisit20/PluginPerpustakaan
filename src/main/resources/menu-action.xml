@@ -25,4 +25,10 @@
         <text>Menu AddBook</text>
         <action>com.bits.bee.perpustakaan.action.FrmAddBookAction</action>
     </menuItem>
+    <menuItem>
+        <objid>PGP-TR-10</objid>
+        <name>Menu PinjamBook</name>
+        <text>Menu PinjamBook</text>
+        <action>com.bits.bee.perpustakaan.action.FrmPinjamBookAction</action>
+    </menuItem>
 </menus>

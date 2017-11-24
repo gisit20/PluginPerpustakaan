@@ -61,12 +61,11 @@ public class PinjamBookTrans extends BTrans {
 
         @Override
         public void postRow(DataChangeEvent dce) throws Exception {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public void dataChanged(DataChangeEvent evt) {
-            if (evt.getID() == DataChangeEvent.ROW_ADDED && getDataSetDetail().isNull("tambahid")){
+            if (evt.getID() == DataChangeEvent.ROW_ADDED && getDataSetDetail().isNull("pinjamid")){
                 getDetail().setString("pinjamid", getMaster().getString("pinjamid"));
                 getDetail().setShort("pinjamdno", (short) (getDataSetDetail().getRow()+1));
             }            
@@ -86,7 +85,6 @@ public class PinjamBookTrans extends BTrans {
 
         @Override
         public void validate(DataSet ds, Column column, Variant vrnt) throws Exception, DataSetException {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
         
     }

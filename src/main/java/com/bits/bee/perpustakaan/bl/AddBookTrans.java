@@ -12,14 +12,12 @@ import com.bits.lib.BHelp;
 import com.bits.lib.dx.BDM;
 import com.bits.lib.dx.BTrans;
 import com.borland.dx.dataset.Column;
-import com.borland.dx.dataset.ColumnChangeListener;
 import com.borland.dx.dataset.DataChangeEvent;
 import com.borland.dx.dataset.DataChangeListener;
 import com.borland.dx.dataset.DataSet;
 import com.borland.dx.dataset.DataSetException;
 import com.borland.dx.dataset.Variant;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  *
@@ -42,7 +40,7 @@ public class AddBookTrans extends BTrans {
         setspVoid(spAddVoid);
 
         getDataSetDetail().addDataChangeListener(adapter);
-        bookd.addPropertyChangeListener("qty", adapter);
+//        bookd.addPropertyChangeListener("qty", adapter);
 //        bookd.addPropertyChangeListener("listprice", adapter);
 //        bookd.addPropertyChangeListener("subtotal", adapter);
     }
@@ -60,7 +58,7 @@ public class AddBookTrans extends BTrans {
         super.Save();
     }
 
-    private class AddBookAdapter implements DataChangeListener, ColumnChangeListener, PropertyChangeListener {
+    private class AddBookAdapter implements DataChangeListener {
 
         @Override
         public void postRow(DataChangeEvent dce) throws Exception {
@@ -76,22 +74,6 @@ public class AddBookTrans extends BTrans {
 
             }
         }
-
-        @Override
-        public void changed(DataSet ds, Column column, Variant vrnt) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-
-        @Override
-        public void validate(DataSet ds, Column column, Variant vrnt) throws Exception, DataSetException {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-
-        @Override
-        public void propertyChange(PropertyChangeEvent evt) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-
     }
 
 }

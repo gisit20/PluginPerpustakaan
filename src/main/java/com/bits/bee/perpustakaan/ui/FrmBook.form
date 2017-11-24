@@ -54,6 +54,7 @@
   <SubComponents>
     <Container class="com.bits.lib.dbswing.JBToolbar" name="jBToolbar1">
       <Properties>
+        <Property name="enableEdit" type="boolean" value="true"/>
         <Property name="enablePrint" type="boolean" value="false"/>
         <Property name="enableRefresh" type="boolean" value="false"/>
         <Property name="enableVoid" type="boolean" value="false"/>

@@ -5,7 +5,6 @@
  */
 package com.bits.bee.perpustakaan.ui.dlg;
 
-import com.bits.bee.perpustakaan.ui.FrmAddBook;
 import com.bits.bee.ui.DlgFindKode;
 import com.bits.bee.ui.ScreenManager;
 import com.bits.bee.ui.UIMgr;
@@ -22,74 +21,56 @@ import java.beans.PropertyChangeListener;
  *
  * @author Sigit Sukarman
  */
-public class DlgAddBook extends JBDialog implements PropertyChangeListener {
+public class DlgPinjamBook extends JBDialog implements PropertyChangeListener {
 
-    private static DlgAddBook dlg = null;
+    private static DlgPinjamBook dlg = null;
     private QueryDataSet qds = new QueryDataSet();
     private DataSetView dsv = new DataSetView();
-    private String judul = null;
     private String kode = null;
-//    FrmAddBook book = null;
 
     /**
-     * Creates new form DlgAddBook
+     * Creates new form DlgPinjamBook
      */
-    public DlgAddBook() {
-        super(ScreenManager.getParent(), "Daftar Buku");
-        initComponents();        
+    public DlgPinjamBook() {
+        super(ScreenManager.getParent(), "Dialog Pinjam Buku");
+        initComponents();
         UIMgr.setPeriode(jBOSPeriode1, 0);
-//        initTable();
     }
 
-    public static synchronized DlgAddBook getInstance() {
+    public static synchronized DlgPinjamBook getInstance() {
         if (dlg == null) {
-            dlg = new DlgAddBook();
+            dlg = new DlgPinjamBook();
         }
         return dlg;
     }
-    
-    private void initTable(){
-//        qds.getColumn("d.tambahid").setCaption("No");
-//        qds.getColumn("d.tambahid").setWidth(13);
-//        qds.getColumn("d.tambahid").setVisible(1);
-//        qds.getColumn("d.tambahdate").setCaption("Tanggal");
-//        qds.getColumn("d.tambahdate").setWidth(13);
-//        qds.getColumn("d.tambahdate").setVisible(1);
-//        qds.getColumn("bookid").setCaption("No Buku");
-//        qds.getColumn("bookid").setWidth(5);
-//        qds.getColumn("title").setCaption("Judul");
-//        qds.getColumn("title").setWidth(15);
-//        qds.getColumn("qty").setCaption("Jumlah");
-//        qds.getColumn("qty").setWidth(5);        
-        
-//        qds.getColumn("tambahid").setVisible(0);
+
+    private void initTable() {
+        qds.getColumn("pinjamid").setVisible(0);
+        qds.getColumn("pinjamdno").setCaption("Nomor");
+        qds.getColumn("pinjamdno").setWidth(3);
+        qds.getColumn("pinjamdate").setCaption("Tanggal");
+        qds.getColumn("pinjamdate").setWidth(8);
+        qds.getColumn("memberid").setCaption("memberid");
+        qds.getColumn("memberid").setWidth(8);
+        qds.getColumn("qty").setCaption("qty");
+        qds.getColumn("qty").setWidth(8);
     }
-    
+
     private void refresh() {
         StringBuffer sql = new StringBuffer();
         StringBuffer filter = new StringBuffer();
-        sql.append("Select d.tambahid, tambahdate FROM addbook "
-                + "LEFT JOIN addbookd d On d.tambahid=addbook.tambahid"
-//                + "LEFT JOIN book b On b.bookid=d.bookid"
+        sql.append("Select m.pinjamid, d.pinjamdno, m.pinjamdate, m.memberid, d.bookid, d.qty FROM pinjambook m "
+                + "LEFT JOIN pinjambookd d On d.pinjamid=pinjambook.pinjamid "
+        //                + "LEFT JOIN branch br On br.branchid=sadj.branchid "
         );
 
-//        sql.append("Select d.tambahid, tambahdate, d.bookid, b.title, d.qty FROM addbook "
-//                + "LEFT JOIN addbookd d On d.tambahid=addbook.tambahid "
-//                + "LEFT JOIN book b On b.bookid=d.bookid"
-//        );
-        
+        JBSQL.ANDFilterPeriode(filter, "m.pinjamdate", jBOSPeriode1);
         if (kode != null) {
-            JBSQL.ANDFilter(filter, JBSQL.filterUpperLike("bookid", kode));
+            JBSQL.ANDFilter(filter, JBSQL.filterUpperLike("m.pinjamid", kode));
         }
 
-//        if (judul != null) {
-//            JBSQL.ANDFilter(filter, JBSQL.filterUpperLike("title", judul));
-//        }
-//        
-        JBSQL.ANDFilterPeriode(filter, "tambahdate", jBOSPeriode1);
-
         JBSQL.setWHERE(sql, filter);
-        JBSQL.setORDERBY(sql, "d.tambahdno, tambahdate");
+        JBSQL.setORDERBY(sql, "m.pinjamid, pinjamdate");
 
         if (qds.isOpen()) {
             qds.close();
@@ -98,20 +79,16 @@ public class DlgAddBook extends JBDialog implements PropertyChangeListener {
         qds.open();
 
         initTable();
-
         if (dsv.isOpen()) {
             dsv.close();
         }
         dsv.setStorageDataSet(qds.getStorageDataSet());
         dsv.open();
-        
-        kode = null;
-        judul = null;
     }
-    
+
     @Override
     protected void OK() {
-        setSelectedID(dsv.getString("tambahid"));
+        setSelectedID(dsv.getString("pinjamid"));
         super.OK();
     }
 
@@ -122,11 +99,11 @@ public class DlgAddBook extends JBDialog implements PropertyChangeListener {
         }
         super.setVisible(visible);
     }
-    
+
     @Override
     protected void f1Action() {
         DlgFindKode dlg = DlgFindKode.getInstance();
-        dlg.setTitle("Cari Nomor Transaksi");
+        dlg.setTitle("Cari Nomor Peminjaman");
         dlg.setTxtLabel("Cari Nomor");
         dlg.setVisible(true);
         String id = dlg.getSelectedID();
@@ -146,17 +123,18 @@ public class DlgAddBook extends JBDialog implements PropertyChangeListener {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jBStatusbarDialog1 = new com.bits.lib.dbswing.JBStatusbarDialog();
         jBToolbarDialog1 = new com.bits.lib.dbswing.JBToolbarDialog();
         jPanel1 = new javax.swing.JPanel();
+        jBOSPeriode1 = new com.bits.bee.ui.myswing.JBOSPeriode();
+        jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jBdbTable1 = new com.bits.lib.dbswing.JBdbTable();
         btnOK1 = new com.bits.bee.ui.myswing.BtnOK();
         btnCancel1 = new com.bits.bee.ui.myswing.BtnCancel();
-        jLabel1 = new javax.swing.JLabel();
-        jBOSPeriode1 = new com.bits.bee.ui.myswing.JBOSPeriode();
+        jBStatusbarDialog1 = new com.bits.lib.dbswing.JBStatusbarDialog();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle(org.openide.util.NbBundle.getMessage(DlgPinjamBook.class, "DlgPinjamBook.title")); // NOI18N
 
         jBToolbarDialog1.setEnableNew(false);
         jBToolbarDialog1.addJBToolbarListener(new com.bits.lib.dbswing.JBToolbarListener() {
@@ -183,6 +161,9 @@ public class DlgAddBook extends JBDialog implements PropertyChangeListener {
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
+        jLabel1.setFont(new java.awt.Font("Bitstream Vera Sans", 0, 11)); // NOI18N
+        jLabel1.setText(org.openide.util.NbBundle.getMessage(DlgPinjamBook.class, "DlgPinjamBook.jLabel1.text")); // NOI18N
+
         jBdbTable1.setDataSet(dsv);
         jBdbTable1.setEditable(false);
         jBdbTable1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -204,14 +185,18 @@ public class DlgAddBook extends JBDialog implements PropertyChangeListener {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Bitstream Vera Sans", 0, 11)); // NOI18N
-        jLabel1.setText(org.openide.util.NbBundle.getMessage(DlgAddBook.class, "DlgAddBook.jLabel1.text")); // NOI18N
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jBOSPeriode1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(71, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -220,23 +205,17 @@ public class DlgAddBook extends JBDialog implements PropertyChangeListener {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnOK1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jBOSPeriode1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jBOSPeriode1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
-                .addGap(27, 27, 27)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnOK1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -249,13 +228,13 @@ public class DlgAddBook extends JBDialog implements PropertyChangeListener {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jBStatusbarDialog1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jBToolbarDialog1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jBStatusbarDialog1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addComponent(jBToolbarDialog1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -267,14 +246,8 @@ public class DlgAddBook extends JBDialog implements PropertyChangeListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOK1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOK1ActionPerformed
-        OK();// TODO add your handling code here:
+        OK();
     }//GEN-LAST:event_btnOK1ActionPerformed
-
-    private void jBdbTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBdbTable1MouseClicked
-        if (evt.getClickCount() == 2){
-            OK();
-        }
-    }//GEN-LAST:event_jBdbTable1MouseClicked
 
     private void btnCancel1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancel1ActionPerformed
         Cancel();
@@ -284,6 +257,11 @@ public class DlgAddBook extends JBDialog implements PropertyChangeListener {
         refresh();
     }//GEN-LAST:event_jBToolbarDialog1ToolbarRefreshPerformed
 
+    private void jBdbTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBdbTable1MouseClicked
+        if (evt.getClickCount()==2){
+            OK();
+        }
+    }//GEN-LAST:event_jBdbTable1MouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.bits.bee.ui.myswing.BtnCancel btnCancel1;
@@ -296,8 +274,8 @@ public class DlgAddBook extends JBDialog implements PropertyChangeListener {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
     }
-    
 }

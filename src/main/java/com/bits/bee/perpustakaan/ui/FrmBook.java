@@ -71,6 +71,7 @@ public class FrmBook extends InternalFrameTrans implements PropertyChangeListene
 
         setTitle(org.openide.util.NbBundle.getMessage(FrmBook.class, "FrmBook.title")); // NOI18N
 
+        jBToolbar1.setEnableEdit(true);
         jBToolbar1.setEnablePrint(false);
         jBToolbar1.setEnableRefresh(false);
         jBToolbar1.setEnableVoid(false);
@@ -353,7 +354,8 @@ public class FrmBook extends InternalFrameTrans implements PropertyChangeListene
             } else {
                 jBToolbar1.setEnableEdit(true);
                 initPanel(false);
-            }
+            }            
+            jBToolbar1.setEnableDelete(false);
         }
     }
 }

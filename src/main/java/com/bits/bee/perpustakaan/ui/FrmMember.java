@@ -43,11 +43,11 @@ public class FrmMember extends InternalFrameTrans implements PropertyChangeListe
      */
     public FrmMember() {
         initComponents();
-        initForm();
+        initTable();
         refresh();
     }
 
-    private void initForm() {
+    private void initTable() {
         jBToolbar1.setState(state);
         jBToolbar1.setObjid(OBJID);
         jBToolbar1.setAuthMgr(BAuthMgr.getDefault());

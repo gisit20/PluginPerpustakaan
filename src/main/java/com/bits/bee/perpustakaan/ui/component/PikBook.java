@@ -22,9 +22,9 @@ public class PikBook extends JBPicker {
     
     @Override
     public JBDialog getDefaultDialog() {
-//        if(dlg==null){
-//            dlg=new FrmAddBook.getInstance(); 
-//        }
+        if(dlg==null){
+            dlg=new DlgAddBook().getInstance(); 
+        }
         return dlg;
     }
 
