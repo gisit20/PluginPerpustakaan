@@ -120,6 +120,7 @@ public class DlgMember extends JBDialog {
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
         jBdbTable1.setDataSet(dsv);
+        jBdbTable1.setEditable(false);
         jScrollPane1.setViewportView(jBdbTable1);
 
         btnOK1.addActionListener(new java.awt.event.ActionListener() {

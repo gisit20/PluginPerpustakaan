@@ -16,7 +16,7 @@ import com.borland.dx.dataset.Variant;
  */
 public class Member2 extends BTable{
 
-    public Member2(BDM bdm, String tableName, String idNames) {
+    public Member2() {
         super(BDM.getDefault(),"member", "memberid");
         
         Column[] cols = {

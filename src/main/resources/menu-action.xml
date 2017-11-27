@@ -31,4 +31,16 @@
         <text>Menu PinjamBook</text>
         <action>com.bits.bee.perpustakaan.action.FrmPinjamBookAction</action>
     </menuItem>
+    <menuItem>
+        <objid>PGP-TR-11</objid>
+        <name>Menu View Stock Book</name>
+        <text>Menu View Stock Book</text>
+        <action>com.bits.bee.perpustakaan.action.FrmViewStockBookAction11</action>
+    </menuItem>
+    <menuItem>
+        <objid>PGP-TR-12</objid>
+        <name>Menu View Stock Book</name>
+        <text>Menu View Stock Book</text>
+        <action>com.bits.bee.perpustakaan.action.FrmViewStockBookAction</action>
+    </menuItem>
 </menus>

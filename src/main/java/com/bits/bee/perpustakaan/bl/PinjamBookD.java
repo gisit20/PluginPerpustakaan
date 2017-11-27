@@ -5,6 +5,7 @@
  */
 package com.bits.bee.perpustakaan.bl;
 
+import com.bits.bee.bl.BLUtil;
 import com.bits.lib.dx.BDM;
 import com.bits.lib.dx.BTable;
 import com.bits.lib.dx.JBSQL;
@@ -44,6 +45,7 @@ public class PinjamBookD extends BTable implements CalcFieldsListener, DataChang
         JBSQL.setCalc((Column) hm.get("title"));
 //	((Column)hm.get("duedate")).setFormatter(UIMgr.getDateYMD());
         createDataSet(cols);
+        BLUtil.setDataPreferredOrdinal(cols);
         try {
             dataset.addCalcFieldsListener(this);
             dataset.addColumnChangeListener(this);

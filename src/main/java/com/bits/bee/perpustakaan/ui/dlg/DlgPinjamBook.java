@@ -45,25 +45,27 @@ public class DlgPinjamBook extends JBDialog implements PropertyChangeListener {
     }
 
     private void initTable() {
-        qds.getColumn("pinjamid").setVisible(0);
-        qds.getColumn("pinjamdno").setCaption("Nomor");
-        qds.getColumn("pinjamdno").setWidth(3);
+        qds.getColumn("pinjamid").setCaption("No Pinjam");
+        qds.getColumn("pinjamid").setWidth(15);
         qds.getColumn("pinjamdate").setCaption("Tanggal");
         qds.getColumn("pinjamdate").setWidth(8);
-        qds.getColumn("memberid").setCaption("memberid");
-        qds.getColumn("memberid").setWidth(8);
-        qds.getColumn("qty").setCaption("qty");
-        qds.getColumn("qty").setWidth(8);
+        qds.getColumn("membername").setCaption("Nama Member");
+        qds.getColumn("membername").setWidth(8);
+//        qds.getColumn("memberid").setVisible(0);
     }
 
     private void refresh() {
         StringBuffer sql = new StringBuffer();
         StringBuffer filter = new StringBuffer();
-        sql.append("Select m.pinjamid, d.pinjamdno, m.pinjamdate, m.memberid, d.bookid, d.qty FROM pinjambook m "
-                + "LEFT JOIN pinjambookd d On d.pinjamid=pinjambook.pinjamid "
+        sql.append("Select m.pinjamid, m.pinjamdate, mb.membername FROM pinjambook m "
+                        + "LEFT JOIN member mb On mb.memberid=m.memberid"
         //                + "LEFT JOIN branch br On br.branchid=sadj.branchid "
         );
 
+//        sql.append("Select m.pinjamid, d.pinjamdno, m.pinjamdate, m.memberid, d.bookid, d.qty FROM pinjambook m "
+//                + "LEFT JOIN pinjambookd d On d.pinjamid=m.pinjamid"
+//        //                + "LEFT JOIN branch br On br.branchid=sadj.branchid "
+//        );
         JBSQL.ANDFilterPeriode(filter, "m.pinjamdate", jBOSPeriode1);
         if (kode != null) {
             JBSQL.ANDFilter(filter, JBSQL.filterUpperLike("m.pinjamid", kode));
@@ -258,7 +260,7 @@ public class DlgPinjamBook extends JBDialog implements PropertyChangeListener {
     }//GEN-LAST:event_jBToolbarDialog1ToolbarRefreshPerformed
 
     private void jBdbTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBdbTable1MouseClicked
-        if (evt.getClickCount()==2){
+        if (evt.getClickCount() == 2) {
             OK();
         }
     }//GEN-LAST:event_jBdbTable1MouseClicked

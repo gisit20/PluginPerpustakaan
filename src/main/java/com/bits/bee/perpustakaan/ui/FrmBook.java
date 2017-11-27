@@ -69,6 +69,9 @@ public class FrmBook extends InternalFrameTrans implements PropertyChangeListene
         jBdbTextField3 = new com.bits.lib.dbswing.JBdbTextField();
         jFormLabel1 = new com.bits.bee.ui.myswing.JFormLabel();
 
+        setClosable(true);
+        setMaximizable(true);
+        setResizable(true);
         setTitle(org.openide.util.NbBundle.getMessage(FrmBook.class, "FrmBook.title")); // NOI18N
 
         jBToolbar1.setEnableEdit(true);
@@ -256,18 +259,6 @@ public class FrmBook extends InternalFrameTrans implements PropertyChangeListene
 
     @Override
     public void doOpen() {
-//        DlgPegawai dlg = DlgPegawai.getInstance();
-//        dlg.setVisible(true);
-//        if (dlg.getSelectedID() != null) {
-//            try {
-//                bk.LoadID(dlg.getSelectedID());
-//                state.setState(BdbState.stEDIT);            
-//            } catch (Exception ex) {
-//                Exceptions.printStackTrace(ex);
-//            }
-//        }
-        
-        
         DlgBook dlg = DlgBook.getInstance();
         dlg.setVisible(true);
         if (dlg.getSelectedID() != null) {
